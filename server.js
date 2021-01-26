@@ -1,15 +1,14 @@
 
 let Server = class{
     constructor(){
-        
     this.flowRate = parseFloat((Math.random() * 9.9).toFixed(2));
     this.pumpType = ['0.01 to 9.99', '0.01 to 40.0'][Math.round(Math.random())];
     this.pumpHeadType = Math.round(Math.random());
-    this.pumpHeadMaterial = Math.floor(Math.random() * 4);
+    this.pumpHeadMaterial = Math.ceil(Math.random() * 4);
     this.runState = 0;
     this.unit = ['PSI', 'ATM', 'MPA', 'BAR', 'KGC'][Math.floor(Math.random() * 4)];
     this.pressure = (Math.floor(Math.random() * 10)) * 500;
-    this.pc = 0;
+    this.pc = this.pressure/100;
     this.highPressureLimit = 3000;
     this.lowPressureLimit = 500;
     this.pressureBoard = Math.round(Math.random());
@@ -23,6 +22,9 @@ let Server = class{
     this.externalPUMPRUN = Math.round(Math.random());
     this.externalPUMPSTOP = Math.round(Math.random());
     this.externalENABLEIN = Math.round(Math.random());
+    this.powerState = 0;
+    this.decidesPSCM(this.controlMethod, this.runState);
+    this.limitWarning(this.pressure, this.highPressureLimit, this.lowPressureLimit);
     }
 
 
@@ -61,23 +63,20 @@ let Server = class{
             return 'OK ' + this.pumpType + ' /';
         }
 
-        else if (command.indexOf("FL")) {
-            let num1 = command.match(/\d+\.*\d*$/g);
-            console.log(num1);
-            this.flowRate = num1;
+        else if (command.includes("FL")) {
+            let num = parseFloat(command.match(/\d+\.*\d*$/g));
+            this.flowRate = num;
             return ' OK/';
         }
 
-        else if (command.indexOf("FO")) {
-            let num2 = command.match(/\d+\.*\d*$/g);
-            console.log(num2);
-            this.flowRate = num2;
+        else if (command.includes("FO")) {
+            let num = parseFloat(command.match(/\d+\.*\d*$/g));
+            this.flowRate = num;
             return 'OK/';
         }
 
         else if (command === "RU") {
             this.runState = 1;
-            console.log(123);
             return 'OK/';
         }
 
@@ -87,28 +86,23 @@ let Server = class{
         }
 
         else if (command === "CS") {
-            let output = 'OK, ' + this.flowRate + ', 0, 0, ' + this.unit + ', ' + this.pumpHeadType + ', ' + this.runState + ', 1/'
-            console.log(output);
-            return  output; 
+            return  'OK, ' + this.flowRate + ', 0, 0, ' + this.unit + ', ' + this.pumpHeadType + ', ' + this.runState + ', 1/'; 
         }
 
         else if (command === "PI") {
-            decidesPSCM(this.controlMethod, this.runState);
-            limitWarning(this.pressure, this.highPressureLimit, this.lowPressureLimit);
             return 'OK, ' + this.flowRate + ', ' + this.pc + ', ' + this.pumpHeadMaterial + ', ' + this.pressureBoard + ', ' + this.controlMethod + ', ' + this.pumpStartsWithFrequency + ', ' + this.pumpStartsWithVoltage + ', ' + this.highPressureWarning + ', ' + this.lowPressureWarning + ', ' + this.pumpPriming + ', ' + this.keyboardAblility + ', ' + this.externalPUMPRUN + ', ' + this.externalPUMPSTOP + ', ' + this.externalENABLEIN + ' /';
         }
 
-        else if (command.indexOf("HI") === 0) {
-            let num = command.replace(/[^\d]/g, ' ');
-            console.log(num);
+        else if (command.includes("HI")) {
+            let num = parseInt(command.replace(/[^\d]/g, ''));
             this.pumpHeadMaterial = num;
             return 'OK/';
         }
 
-        else if (command.indexOf("PC") === 0) {
-            let num3 = command.replace(/[^\d]/g, ' ');
-            console.log(num3);
-            this.pc = num3;
+        else if (command.includes("PC")) {
+            let num = parseInt(command.replace(/[^\d]/g, ''));
+            console.log(num);
+            this.pc = num;
             return 'OK/';
         }
 
@@ -123,6 +117,7 @@ let Server = class{
         }
 
         else if (command === "RE") {
+            this.powerState = 1;
             return 'OK/';
         }
 

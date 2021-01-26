@@ -1,41 +1,137 @@
-let Server = {
-    "CC*": 'OK, 0, 0.01 to 9.99 mL/min for 10 mL head/',
-    ID: '1.23/',
-    FL: '0.01 to 9.99 OK/',
-    "FO*": '03.50 OK/',
-    RU: 'OK/',
-    ST: 'OK/',
-    "CS*": ['OK 01.05, 0, 0, PSI,0,1/','OK 01.25, 0, 0, ATM,0,1/','OK 8.93, 1, 1, PSI,0,1/','OK 3.15, 1, 0, PSI,1,1/','OK 9.98 1, 1, KGC, 0, 1/'],
-    PI: ['OK 3.59,20, 1, 0,1,1,1,1,1,1,1,1,1,1/','OK 5.42,20, 1, 0,1,1,1,0,1,0,1,1,1,1/','OK 6.78, 2, 0,0,1,1,1,1,1,0,1,1,1/','OK 8.99,20, 3, 0,1,1,1,1,1,0,0,1,1,1/','OK 3.78,20, 4, 0,1,1,1,1,1,0,1,0,1,1/'],
-    "HI,1": 'OK/',
-    "HI,2": 'OK/',
-    "HI,3": 'OK/',
-    "HI,4": 'OK/',
-    "PC,xx": 'OK/',
-    KD: 'OK',
-    KE: 'OK',
-    RE: 'OK',
-    "#*": "cleared",
 
-    
-    input: function (command) {
-        if (command === "CS*" || command === "PI") {
-            let num = Math.floor(Math.random()*5);  
-            return(Server[command][num]);
+let Server = class{
+    constructor(){
+        
+    this.flowRate = parseFloat((Math.random() * 9.9).toFixed(2));
+    this.pumpType = ['0.01 to 9.99', '0.01 to 40.0'][Math.round(Math.random())];
+    this.pumpHeadType = Math.round(Math.random());
+    this.pumpHeadMaterial = Math.floor(Math.random() * 4);
+    this.runState = 0;
+    this.unit = ['PSI', 'ATM', 'MPA', 'BAR', 'KGC'][Math.floor(Math.random() * 4)];
+    this.pressure = (Math.floor(Math.random() * 10)) * 500;
+    this.pc = 0;
+    this.highPressureLimit = 3000;
+    this.lowPressureLimit = 500;
+    this.pressureBoard = Math.round(Math.random());
+    this.controlMethod = Math.round(Math.random());
+    this.pumpPriming = Math.round(Math.random());
+    this.pumpStartsWithFrequency = 0;
+    this.pumpStartsWithVoltage = 0;
+    this.highPressureWarning = 0;
+    this.lowPressureWarning = 0;
+    this.keyboardAblility = 0;
+    this.externalPUMPRUN = Math.round(Math.random());
+    this.externalPUMPSTOP = Math.round(Math.random());
+    this.externalENABLEIN = Math.round(Math.random());
+    }
+
+
+   decidesPSCM(controlMethod, runState) {
+        if (controlMethod === 0 && runState === 1) {
+            this.pumpStartsWithFrequency = 1;
+        } else {
+            this.pumpStartsWithFrequency = 0;
         }
+        if (controlMethod === 1 && runState === 1) {
+            this.pumpStartsWithVoltage = 1;
+        } else {
+            this.pumpStartsWithVoltage = 0;
+        }
+    };
+
+    limitWarning(pressure, highPressureLimit, lowPressureLimit) {
+        if (pressure > highPressureLimit) {
+            this.highPressureWarning = 1;
+        } else {
+            this.highPressureWarning = 0;
+        }
+        if (pressure < lowPressureLimit) {
+            this.lowPressureWarning = 1;
+        } else {
+            this.lowPressureWarning = 0;
+        }
+    };
+
+    input(command) {
+        if (command === "CC*") {
+            return 'OK, 0, ' + this.flowRate + '/';
+        }
+
+        else if(command === "ID") {
+            return 'OK ' + this.pumpType + ' /';
+        }
+
+        else if (command.indexOf("FL")) {
+            let num1 = command.match(/\d+\.*\d*$/g);
+            console.log(num1);
+            this.flowRate = num1;
+            return ' OK/';
+        }
+
+        else if (command.indexOf("FO")) {
+            let num2 = command.match(/\d+\.*\d*$/g);
+            console.log(num2);
+            this.flowRate = num2;
+            return 'OK/';
+        }
+
+        else if (command === "RU") {
+            this.runState = 1;
+            console.log(123);
+            return 'OK/';
+        }
+
+        else if (command === "ST") {
+            this.runState = 0;
+            return 'OK/';
+        }
+
+        else if (command === "CS") {
+            let output = 'OK, ' + this.flowRate + ', 0, 0, ' + this.unit + ', ' + this.pumpHeadType + ', ' + this.runState + ', 1/'
+            console.log(output);
+            return  output; 
+        }
+
+        else if (command === "PI") {
+            decidesPSCM(this.controlMethod, this.runState);
+            limitWarning(this.pressure, this.highPressureLimit, this.lowPressureLimit);
+            return 'OK, ' + this.flowRate + ', ' + this.pc + ', ' + this.pumpHeadMaterial + ', ' + this.pressureBoard + ', ' + this.controlMethod + ', ' + this.pumpStartsWithFrequency + ', ' + this.pumpStartsWithVoltage + ', ' + this.highPressureWarning + ', ' + this.lowPressureWarning + ', ' + this.pumpPriming + ', ' + this.keyboardAblility + ', ' + this.externalPUMPRUN + ', ' + this.externalPUMPSTOP + ', ' + this.externalENABLEIN + ' /';
+        }
+
         else if (command.indexOf("HI") === 0) {
-            let num = command.replace(/[^\d]/g,' ');
+            let num = command.replace(/[^\d]/g, ' ');
             console.log(num);
-            return Server[command];
+            this.pumpHeadMaterial = num;
+            return 'OK/';
         }
+
         else if (command.indexOf("PC") === 0) {
-            let num = command.replace(/[^\d]/g,' ');
-            console.log(num);
-            return Server["PC,xx"];
-            
+            let num3 = command.replace(/[^\d]/g, ' ');
+            console.log(num3);
+            this.pc = num3;
+            return 'OK/';
         }
-        else
-        return Server[command];
+
+        else if (command === "KD") {
+            this.keyboardAblility = 1;
+            return 'OK/';
+        }
+
+        else if (command === "KE") {
+            this.keyboardAblility = 0;
+            return 'OK/';
+        }
+
+        else if (command === "RE") {
+            return 'OK/';
+        }
+
+        else if (command === "#*") {
+            console.clear();
+        }
+        else{
+            return "Wrong input, please input correct code."
+        }
     }
 }
 module.exports = Server;

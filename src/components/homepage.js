@@ -73,21 +73,23 @@ const OperateButton = (props) => {
         <img src={props.img}  alt="props.alt" /></Link>
     )
 }
-export default class Homepage extends Component {
+/* export default class Homepage extends Component {
     constructor(props){
         super();
         this.handleClickBtn = this.handleClickBtn.bind(this);
      }
      handleClickBtn(){
-        this.props.history.push('');
-     }
-    
-    render() {
+        this.props.history.push('homepage');
+     } */
+    const Homepage = ()=> {
+        const[open,setOpen] = useState(false);
+
+    // render() {
         return (
             <div className = 'whole'>
                 <div className = 'screen'> 
                     <Screen></Screen>
-                    <KeyboardIcon className = 'keyboard'></KeyboardIcon>
+                    <Keyboard className = 'keyboard'></Keyboard>
                 </div>
                 <div className = 'controlpanel'>
                     <ControlPanel text1="R/S" text2="Prime" />
@@ -106,4 +108,4 @@ export default class Homepage extends Component {
             </div>
         )
     }
-}
+export default Homepage;

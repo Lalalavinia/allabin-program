@@ -1,0 +1,112 @@
+/*welcome page */
+.text{
+    font-family: "Segoe UI";
+    font-size : 32px;
+    color: #E3DA63;
+    margin: 50px;
+    font-style: italic;
+}
+.welcome-button{
+    text-align: center;
+}
+.start-btn{
+    font-size: 20px;
+    padding: 20px 40px;
+    text-align: center;
+}
+
+/*homepage */
+ .whole{
+    display: flex;
+    margin: 10vw 10vw;
+    /* text-align: center; */
+     /* width: 1920px; */
+}
+.kb-btn{
+    position: fixed;
+    bottom: -250px;
+}
+/* .MuiIconButton-label{
+    display: none;
+} */
+/* .MuiTouchRipple-root{
+    display: none;
+} */
+.screen{
+    margin-right:10vw; 
+    /* text-align: center; */
+    /* font-size: larger; */
+}
+.screen-hidden {
+    display: none;
+}
+
+/* red flashing */
+.red-flashing {
+    height: 10px;
+    width: 10px;
+    background-color: red;
+    border-radius: 100%;
+    margin-left: 5px ;
+     /* vertical-align: super; */
+     animation: twinkle 0.5s infinite alternate;
+}
+@keyframes twinkle {
+    0%{
+        opacity:.0.8;
+    }
+    100%{
+        opacity:0;
+    }
+}
+.red-flash-hide{
+    display: none;
+
+}
+img{
+    width:50%;
+    /* margin-left: 0.5vw; */
+}
+.operator{
+    display: flex;
+    margin-left: 2vw;
+}
+.add-sub{
+    display: flex;
+    flex-direction: column;
+}
+.add-sub img{
+    margin:1vw 0;
+}
+.controlpanel{
+    margin-left: 15vw;
+}
+.controlpanel button{
+    margin: 0 1vw 2vw 1vw;
+}
+ .panel{
+    margin: 2vw 0;
+} 
+/* .panel button{
+    margin: 0 1vw 2vw 1vw;
+} */
+.panel-up button{
+    margin:0 2vw;
+}
+.add-sub a{
+    margin:3px 0;
+} 
+.ok img{
+    margin-top: 0.8vw;
+    width:55%;
+} 
+.info-dropdown select, .setting-dropdown select{
+    font-size: 20px;
+}
+.keyboardModal{
+    position: fixed;
+    margin: 10vw 10vw;
+}
+.hide-infoscreen{
+    display: none;
+}

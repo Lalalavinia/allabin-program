@@ -6,6 +6,17 @@
     margin: 50px;
     font-style: italic;
 }
+.text_inline{
+    font-family: "Segoe UI";
+    font-size : 20px;
+    color: rgb(44, 75, 65);
+    /* margin: 50px; */
+    /* font-style: italic; */
+    font-weight: bold;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
 .welcome-button{
     text-align: center;
 }
@@ -18,13 +29,19 @@
 /*homepage */
  .whole{
     display: flex;
-    margin: 10vw 10vw;
+    margin: 100px 80px 0 80px;
     /* text-align: center; */
      /* width: 1920px; */
 }
-.kb-btn{
+.kb-div{
+    height: 0px;
+    /* bottom: 200px; */
     position: fixed;
-    bottom: -250px;
+}
+
+.kb-btn{
+    position:fixed;
+    bottom: 20px;
 }
 /* .MuiIconButton-label{
     display: none;
@@ -32,10 +49,11 @@
 /* .MuiTouchRipple-root{
     display: none;
 } */
-.screen{
-    margin-right:10vw; 
-    /* text-align: center; */
-    /* font-size: larger; */
+ .screen{
+     width:400px;
+     height:500px;
+     /* text-align: center; 
+     font-size: larger; */
 }
 .screen-hidden {
     display: none;
@@ -48,7 +66,7 @@
     background-color: red;
     border-radius: 100%;
     margin-left: 5px ;
-     /* vertical-align: super; */
+        /* vertical-align: super; */
      animation: twinkle 0.5s infinite alternate;
 }
 @keyframes twinkle {
@@ -79,7 +97,7 @@ img{
     margin:1vw 0;
 }
 .controlpanel{
-    margin-left: 15vw;
+    margin-left:50px;
 }
 .controlpanel button{
     margin: 0 1vw 2vw 1vw;
@@ -106,6 +124,11 @@ img{
 .keyboardModal{
     position: fixed;
     margin: 10vw 10vw;
+}
+.mid-screen{
+    width: 400px;
+    height: 300px;
+    margin: 0;
 }
 .hide-infoscreen{
     display: none;

@@ -15,7 +15,7 @@ import add from './imgs/add.png';
 import subtract from './imgs/subtract.png';
 import ok from './imgs/OK.png';
 import './homepage.css';
-// import Server from "./server";
+import Server from "./server";
 //import { Component } from 'react';
 
 const Welcome = ({ setDisplaySplashScreen }) => {
@@ -43,7 +43,6 @@ const Welcome = ({ setDisplaySplashScreen }) => {
 const Keyboard = () => {
   const [open, setOpen] = useState(false);
   const [enableKeyboard, setEnableKeyboard] = useState(false);
-
   const handleOpen = () => {
     setOpen(true);
     setEnableKeyboard(!enableKeyboard);
@@ -53,7 +52,7 @@ const Keyboard = () => {
     console.log(open);
   }
   return (
-    <div>
+    <div className = 'kb-div'>
       <IconButton aria-label="keyboard" className='kb-btn' onClick={handleOpen}>
         <KeyboardIcon fontSize="large" />
       </IconButton>
@@ -89,97 +88,73 @@ const theme = createMuiTheme({
     },
   },
 });
-// const pumpInfo = new Server();
 
-// const InfoDropdown = () => {
-//   return (
-//     <div className="info-dropdown">
-//      <select id="infoDropdown" ref = {(input) => this.infoMenu = input} >
-//       <option value="Please select" disabled selected hidden>Please select the code .</option>
-//       <option value="1">CC*</option>
-//       <option value="2">ID</option>
-//       <option value="3">CS</option>
-//       <option value="4">PI</option>
-//   </select>
-//     </div>
-//   )
-// }
-// let info = this.infoMenu.value;
-// const infoValue= ()=>{
-//   let sel =document.getElementById('infoDropdown');
-//   console.log ("sel is " + sel)
-//   let sid = sel.selectedIndex;
-//   let selValue = sel[sid].innerHTML;
-//   return selValue;
-// }
-const InfoDropdown = ()=>{
-  const[value, setValue] = useState('Please select');
-
-const handleChange = e => {
+const InfoDropdown = ({ pumpInfo,infoScreenVisible, setInfoScreenVisible }) => {
+  const [value, setValue] = useState('Please select');
+    const handleChange = e => {
     e.preventDefault();
     setValue(e.target.value);
   }
-  const handleSubmit = e =>{
-    console.log('Your choice is: ' + value);
+  const handleSubmit = e => {
+    setInfoScreenVisible(true);
     e.preventDefault();
-    let submitValue = value;
-    return submitValue;
   }
-    return(
-      <form className="info-dropdown" onSubmit ={handleSubmit}>
-        <select value= {value} onChange={handleChange} >
-       <option value="Please select" disabled selected hidden>Please select the code .</option>
-       <option value="CC*">CC*</option>
-      <option value="ID">ID</option>
-       <option value="CS">CS</option>
-       <option value="PI">PI</option>
-   </select>
-   <input type="submit" value="Submit" />
+  return (
+    <div>
+      <form className="info-dropdown" onSubmit={handleSubmit}>
+        <select value={value} onChange={handleChange} >
+          <option value="Please select" disabled selected hidden>Please select the code .</option>
+          <option value="CC*">CC*</option>
+          <option value="ID">ID</option>
+          <option value="CS">CS</option>
+          <option value="PI">PI</option>
+        </select>
+        <input type="submit" value="Submit" />
       </form>
-    )
+      <div className = 'mid-screen'>{infoScreenVisible ?  (<p className="text_inline">{pumpInfo.input(value)} </p> ):null }       
+      </div>
+    </div>
+  )
+}
+
+const SettingDropdown = ({ pumpInfo, infoScreenVisible, setInfoScreenVisible}) => {
+  const [inpValue,setInput] = useState(0.00);
+  const handleChange = e => {
+    e.preventDefault();
+    setInput(e.target.value);
   }
-
-const InfoScreen = () => {
+  const handleSubmit = e => {
+    console.log('Your choice is: ' + inpValue);
+    setInfoScreenVisible(true);
+    e.preventDefault();
+  }
   return (
-    <div className = 'info-screen hide-infoscreen'>
-      <p>Info Screen </p>
-    </div>
-  )
-}
-const SettingDropdown = () => {
-  return (
-    <div className="setting-dropdown" defaultValue={'DEFAULT'}>
-      <select name="settingDropdown" >
-        <option value="0" disabled selected hidden>Please select the code .</option>
-        <option value="1">FL</option>
-        <option value="2">FO</option>
-        <option value="3">RU</option>
-        <option value="4">ST</option>
-        <option value="5">HI</option>
-        <option value="6">PC</option>
-        <option value="7">KD</option>
-        <option value="8">KE</option>
-        <option value="9">RE</option>
-        <option value="10">#*</option>
-      </select>
+    <div>
+      <form className="info-dropdown" onSubmit={handleSubmit}>
+          <p className = "text_inline">Please input the code and value</p>
+        <input type="text" onChange={handleChange} defaultValue={inpValue} onSubmit={handleSubmit} />
+        <input type="submit" value="Submit" />
+      </form>
+      <div className = 'mid-screen'>{infoScreenVisible ?  (<p className="text_inline">{pumpInfo.input(inpValue)} </p> ):null }    
+      </div>
     </div>
   )
 }
 
-const Screen = ({ displayValue, displayDropdownType }) => {
-
+const Screen = ({ displayValue, displayDropdownType, pumpInfo }) => {
+  const [infoScreenVisible, setInfoScreenVisible] = useState(false);
   if (displayDropdownType) {
     return (
       <div>
         <p>{displayValue}</p>
-        <InfoDropdown />
+        <InfoDropdown pumpInfo={pumpInfo} infoScreenVisible = {infoScreenVisible} setInfoScreenVisible = {setInfoScreenVisible}/>
       </div>
     )
   } else {
     return (
       <div>
         <p>{displayValue}</p>
-        <SettingDropdown />
+        <SettingDropdown pumpInfo={pumpInfo} infoScreenVisible = {infoScreenVisible} setInfoScreenVisible = {setInfoScreenVisible}/>
       </div>
     )
   }
@@ -207,7 +182,7 @@ const ControlPanelButtons2 = (props) => {
   )
 }
 
-const ControlPanel = ({ setDisplayDropdownType,  setInfoScreenVisible }) => {
+const ControlPanel = ({ setDisplayDropdownType }) => {
   const [open, setOpen] = useState(false);
   const [rs, setRs] = useState(false);
   const [prime, setPrime] = useState(false);
@@ -229,11 +204,11 @@ const ControlPanel = ({ setDisplayDropdownType,  setInfoScreenVisible }) => {
   }
   const infoClick = () => {
     setDisplayDropdownType(true);
-    setInfoScreenVisible(false);
+    // setInfoScreenVisible(false);
   }
   const settingClick = () => {
     setDisplayDropdownType(false);
-    setInfoScreenVisible(false);
+    // setInfoScreenVisible(false);
   }
   return (
     <div className='controlpanel'>
@@ -255,23 +230,24 @@ const ControlPanel = ({ setDisplayDropdownType,  setInfoScreenVisible }) => {
     </div>
   )
 }
-const apiService = new ApiService()
+const apiService = new ApiService();
+const pumpInfo = new Server();
 
-const Homepage = ({ api }) => {
+const Homepage = ({ api, pumpInfo, setInfoScreenVisible }) => {
   const [displayDropdownType, setDisplayDropdownType] = useState(true)
-  const [infoScreenVisible, setInfoScreenVisible] = useState(false)
+  // const [infoScreenVisible, setInfoScreenVisible] = useState(false)
   return (
     <div className='whole'>
-      <div>
-        <div className={`screen`}>
-          <Screen displayValue={api.getInfo()} displayDropdownType={displayDropdownType}></Screen>
-          <InfoScreen infoScreenVisible = {infoScreenVisible} />
+      <div className={`screen`}>
+        <div >
+          <Screen displayValue={api.getInfo()} displayDropdownType={displayDropdownType} pumpInfo={pumpInfo}></Screen>
+          {/* <InfoScreen infoScreenVisible = {infoScreenVisible} server = {server} submitValue = {handle}/> */}
         </div>
         <div>
           <Keyboard className='keyboard'></Keyboard>
         </div>
       </div>
-      <ControlPanel setDisplayDropdownType={setDisplayDropdownType} setInfoScreenVisible = {setInfoScreenVisible} />
+      <ControlPanel setDisplayDropdownType={setDisplayDropdownType} setInfoScreenVisible={setInfoScreenVisible} />
     </div>
 
   )
@@ -286,7 +262,7 @@ const App = () => {
   } else {
     return (
       <div>
-        <Homepage api={apiService} />
+        <Homepage api={apiService} pumpInfo={pumpInfo} />
       </div>
     )
   }

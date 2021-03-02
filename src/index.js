@@ -5,18 +5,12 @@ import ApiService from "./api";
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-// import DialogContent from '@material-ui/core/DialogContent';
-// import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import KeyboardIcon from '@material-ui/icons/Keyboard';
-import add from './imgs/add.png';
-import subtract from './imgs/subtract.png';
-import ok from './imgs/OK.png';
 import './homepage.css';
 import Server from "./server";
-//import { Component } from 'react';
 
 const Welcome = ({ setDisplaySplashScreen }) => {
   const handleClick = () => {
@@ -68,11 +62,11 @@ const Keyboard = () => {
   )
 }
 
-const OperateButton = (props) => {
-  return (
-    <img src={props.img} alt={props.alt} />
-  )
-}
+// const OperateButton = (props) => {
+//   return (
+//     <img src={props.img} alt={props.alt} />
+//   )
+// }
 
 const theme = createMuiTheme({
   palette: {
@@ -109,7 +103,7 @@ const InfoDropdown = ({ pumpInfo,infoScreenVisible, setInfoScreenVisible }) => {
           <option value="CS">CS</option>
           <option value="PI">PI</option>
         </select>
-        <input type="submit" value="Submit" />
+        <input className = "OK-btn OK-1" type="submit" value="OK" />
       </form>
       <div className = 'mid-screen'>{infoScreenVisible ?  (<p className="text_inline">{pumpInfo.input(value)} </p> ):null }       
       </div>
@@ -130,10 +124,10 @@ const SettingDropdown = ({ pumpInfo, infoScreenVisible, setInfoScreenVisible}) =
   }
   return (
     <div>
-      <form className="info-dropdown" onSubmit={handleSubmit}>
-          <p className = "text_inline">Please input the code and value</p>
+      <form onSubmit={handleSubmit}>
+          <p className = "text_title">Please input the code and value</p>
         <input type="text" onChange={handleChange} defaultValue={inpValue} onSubmit={handleSubmit} />
-        <input type="submit" value="Submit" />
+        <input className = "OK-btn OK-2" type="submit" value="OK" />
       </form>
       <div className = 'mid-screen'>{infoScreenVisible ?  (<p className="text_inline">{pumpInfo.input(inpValue)} </p> ):null }    
       </div>
@@ -141,19 +135,19 @@ const SettingDropdown = ({ pumpInfo, infoScreenVisible, setInfoScreenVisible}) =
   )
 }
 
-const Screen = ({ displayValue, displayDropdownType, pumpInfo }) => {
+const Screen = ({displayDropdownType, pumpInfo }) => {
   const [infoScreenVisible, setInfoScreenVisible] = useState(false);
   if (displayDropdownType) {
     return (
       <div>
-        <p>{displayValue}</p>
+        <p className = "text_inline">6000PCR Post Column Reactor</p>
         <InfoDropdown pumpInfo={pumpInfo} infoScreenVisible = {infoScreenVisible} setInfoScreenVisible = {setInfoScreenVisible}/>
       </div>
     )
   } else {
     return (
       <div>
-        <p>{displayValue}</p>
+        <p className = "text_inline">6000PCR Post Column Reactor</p>
         <SettingDropdown pumpInfo={pumpInfo} infoScreenVisible = {infoScreenVisible} setInfoScreenVisible = {setInfoScreenVisible}/>
       </div>
     )
@@ -182,25 +176,39 @@ const ControlPanelButtons2 = (props) => {
   )
 }
 
-const ControlPanel = ({ setDisplayDropdownType }) => {
-  const [open, setOpen] = useState(false);
+const ControlPanel = ({ setDisplayDropdownType, pumpInfo }) => {
+  // const [open, setOpen] = useState(false);
   const [rs, setRs] = useState(false);
   const [prime, setPrime] = useState(false);
 
-  useEffect(() => {
-    console.log("1 OPEN")
-  }, [open])
+  // useEffect(() => {
+  //   console.log("1 OPEN")
+  // }, [open])
 
-  const handleOpen = () => {
-    setOpen(!open)
-  }
+  // const handleOpen = () => {
+  //   setOpen(!open)
+  // }
 
   const rsClick = () => {
     setRs(!rs);
+    if(rs === false){
+      pumpInfo.runState = 1;
+      console.log(pumpInfo.runState);
+    } else{
+      pumpInfo.runState = 0;
+      console.log(pumpInfo.runState);
+    }
   }
 
   const primeClick = () => {
     setPrime(!prime);
+    if(prime === true){
+      pumpInfo.pumpPriming = 0;
+      console.log(pumpInfo.pumpPriming);
+    } else{
+      pumpInfo.pumpPriming = 1;
+      console.log(pumpInfo.pumpPriming);
+    }
   }
   const infoClick = () => {
     setDisplayDropdownType(true);
@@ -213,18 +221,9 @@ const ControlPanel = ({ setDisplayDropdownType }) => {
   return (
     <div className='controlpanel'>
       <div>
-
         <ControlPanelButtons1 className='panel-up' state1={rs} text1="R/S" click1={rsClick} state2={prime} text2="Prime" click2={primeClick} />
-
       </div>
       <div className='operator'>
-        <div className='add-sub'>
-          <OperateButton img={add} alt="add" ></OperateButton>
-          <OperateButton img={subtract} alt="subtract"></OperateButton>
-        </div>
-        <div className='ok' onClick={handleOpen}>
-          <OperateButton img={ok} alt="ok"></OperateButton>
-        </div>
       </div>
       <ControlPanelButtons2 text1="Information" click1={infoClick} text2="Setting" click2={settingClick} />
     </div>
@@ -233,23 +232,21 @@ const ControlPanel = ({ setDisplayDropdownType }) => {
 const apiService = new ApiService();
 const pumpInfo = new Server();
 
-const Homepage = ({ api, pumpInfo, setInfoScreenVisible }) => {
+const Homepage = ({pumpInfo, setInfoScreenVisible }) => {
   const [displayDropdownType, setDisplayDropdownType] = useState(true)
   // const [infoScreenVisible, setInfoScreenVisible] = useState(false)
   return (
     <div className='whole'>
       <div className={`screen`}>
         <div >
-          <Screen displayValue={api.getInfo()} displayDropdownType={displayDropdownType} pumpInfo={pumpInfo}></Screen>
-          {/* <InfoScreen infoScreenVisible = {infoScreenVisible} server = {server} submitValue = {handle}/> */}
+          <Screen displayDropdownType={displayDropdownType} pumpInfo={pumpInfo}></Screen>
         </div>
         <div>
           <Keyboard className='keyboard'></Keyboard>
         </div>
       </div>
-      <ControlPanel setDisplayDropdownType={setDisplayDropdownType} setInfoScreenVisible={setInfoScreenVisible} />
+      <ControlPanel setDisplayDropdownType={setDisplayDropdownType} setInfoScreenVisible={setInfoScreenVisible} pumpInfo = {pumpInfo} />
     </div>
-
   )
 }
 

@@ -10,11 +10,14 @@
     font-family: "Segoe UI";
     font-size : 20px;
     color: rgb(44, 75, 65);
-    /* margin: 50px; */
-    /* font-style: italic; */
     font-weight: bold;
     white-space: pre-wrap;
-    line-height: 1.5;
+    line-height: 1.3;
+}
+.text_title{
+    font-family: "Segoe UI";
+    font-size : 20px;
+    color: black;
 }
 
 .welcome-button{
@@ -43,12 +46,28 @@
     position:fixed;
     bottom: 20px;
 }
-/* .MuiIconButton-label{
-    display: none;
-} */
-/* .MuiTouchRipple-root{
-    display: none;
-} */
+
+.OK-btn{
+    height: 80px;
+    width: 80px;
+    font-size: 40px;
+    background-color: #709486;
+    color:#E3DA63 ;
+    font-weight: bold;
+    border-radius: 50%;
+    border: 1px solid #709486;
+   
+}
+.OK-1{
+    position: absolute;
+    margin-left: 240px;
+    margin-top: 250px;
+}
+.OK-2{
+    position: absolute;
+    margin-left: 306.5px;
+    margin-top: 203px;
+}
  .screen{
      width:400px;
      height:500px;
@@ -81,29 +100,21 @@
     display: none;
 
 }
-img{
-    width:50%;
-    /* margin-left: 0.5vw; */
-}
+
 .operator{
     display: flex;
     margin-left: 2vw;
 }
-.add-sub{
-    display: flex;
-    flex-direction: column;
-}
-.add-sub img{
-    margin:1vw 0;
-}
+
 .controlpanel{
     margin-left:50px;
+    margin-top: 50px;
 }
 .controlpanel button{
-    margin: 0 1vw 2vw 1vw;
+    margin: 1vw;
 }
  .panel{
-    margin: 2vw 0;
+    margin: 1vw 0;
 } 
 /* .panel button{
     margin: 0 1vw 2vw 1vw;
@@ -111,13 +122,6 @@ img{
 .panel-up button{
     margin:0 2vw;
 }
-.add-sub a{
-    margin:3px 0;
-} 
-.ok img{
-    margin-top: 0.8vw;
-    width:55%;
-} 
 .info-dropdown select, .setting-dropdown select{
     font-size: 20px;
 }

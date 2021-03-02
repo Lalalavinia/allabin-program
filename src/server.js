@@ -13,7 +13,7 @@ let Server = class{
     this.lowPressureLimit = 500;
     this.pressureBoard = Math.round(Math.random());
     this.controlMethod = Math.round(Math.random());
-    this.pumpPriming = Math.round(Math.random());
+    this.pumpPriming = 0;
     this.pumpStartsWithFrequency = 0;
     this.pumpStartsWithVoltage = 0;
     this.highPressureWarning = 0;
@@ -102,7 +102,7 @@ let Server = class{
             +"\nPump priming :"+this.pumpPriming 
             +"\nKeyboard ability: "+ this.keyboardAblility
             +"\nExternal PUMPRUN: " +this.externalPUMPRUN 
-            +"  External PUMPSTOP: "+ this.externalPUMPSTOP
+            +"\nExternal PUMPSTOP: "+ this.externalPUMPSTOP
             +"\nExteral ENABLEIN: "+ this.externalENABLEIN + ' /')
     
         }

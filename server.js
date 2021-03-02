@@ -56,11 +56,11 @@ let Server = class{
 
     input(command) {
         if (command === "CC*") {
-            return 'OK, 0, ' + this.flowRate + '/';
+            return ("Pump condition: 0, \nFlowrate: " + this.flowRate + " /");
         }
 
         else if(command === "ID") {
-            return 'OK ' + this.pumpType + ' /';
+            return "Pump type: " + this.pumpType + " /";
         }
 
         else if (command.includes("FL")) {
@@ -86,11 +86,25 @@ let Server = class{
         }
 
         else if (command === "CS") {
-            return  'OK, ' + this.flowRate + ', 0, 0, ' + this.unit + ', ' + this.pumpHeadType + ', ' + this.runState + ', 1/'; 
+            return  ("Flowrate: " + this.flowRate + '\nPSI: ' + this.unit  +"\nPump head type: "+ this.pumpHeadType +"\nRun state: "+ this.runState + " /" ); 
         }
 
         else if (command === "PI") {
-            return 'OK, ' + this.flowRate + ', ' + this.pc + ', ' + this.pumpHeadMaterial + ', ' + this.pressureBoard + ', ' + this.controlMethod + ', ' + this.pumpStartsWithFrequency + ', ' + this.pumpStartsWithVoltage + ', ' + this.highPressureWarning + ', ' + this.lowPressureWarning + ', ' + this.pumpPriming + ', ' + this.keyboardAblility + ', ' + this.externalPUMPRUN + ', ' + this.externalPUMPSTOP + ', ' + this.externalENABLEIN + ' /';
+            return ("Flowrate: "+ this.flowRate 
+            +"  Pressure compensation: " +this.pc 
+            +"\nHead type: " + this.pumpHeadMaterial 
+            +"  Pressure board: " + this.pressureBoard 
+            +"  Control: " +this.controlMethod 
+            +"\nPump start with Frequency controlled: "+this.pumpStartsWithFrequency 
+            +"\nPump start with Voltage controlled: "+this.pumpStartsWithVoltage 
+            +"\nHigh pressure warning: "+this.highPressureWarning 
+            +"\nLow pressure warning :"+this.lowPressureWarning 
+            +"\nPump priming :"+this.pumpPriming 
+            +"\nKeyboard ability: "+ this.keyboardAblility
+            +"\nExternal PUMPRUN: " +this.externalPUMPRUN 
+            +"  External PUMPSTOP: "+ this.externalPUMPSTOP
+            +"\nExteral ENABLEIN: "+ this.externalENABLEIN + ' /')
+    
         }
 
         else if (command.includes("HI")) {
@@ -125,8 +139,8 @@ let Server = class{
             console.clear();
         }
         else{
-            return "Wrong input, please input correct code."
+            return " "
         }
     }
 }
-module.exports = Server;
+export default Server;

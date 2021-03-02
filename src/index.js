@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import ApiService from "./api";
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -181,14 +180,6 @@ const ControlPanel = ({ setDisplayDropdownType, pumpInfo }) => {
   const [rs, setRs] = useState(false);
   const [prime, setPrime] = useState(false);
 
-  // useEffect(() => {
-  //   console.log("1 OPEN")
-  // }, [open])
-
-  // const handleOpen = () => {
-  //   setOpen(!open)
-  // }
-
   const rsClick = () => {
     setRs(!rs);
     if(rs === false){
@@ -229,7 +220,7 @@ const ControlPanel = ({ setDisplayDropdownType, pumpInfo }) => {
     </div>
   )
 }
-const apiService = new ApiService();
+
 const pumpInfo = new Server();
 
 const Homepage = ({pumpInfo, setInfoScreenVisible }) => {
@@ -259,7 +250,7 @@ const App = () => {
   } else {
     return (
       <div>
-        <Homepage api={apiService} pumpInfo={pumpInfo} />
+        <Homepage pumpInfo={pumpInfo} />
       </div>
     )
   }

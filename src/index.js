@@ -92,17 +92,20 @@ const InfoDropdown = ({ pumpInfo,infoScreenVisible, setInfoScreenVisible }) => {
     setInfoScreenVisible(true);
     e.preventDefault();
   }
+  const handleScreen = () =>{
+    setInfoScreenVisible(false);
+  }
   return (
     <div>
       <form className="info-dropdown" onSubmit={handleSubmit}>
         <select value={value} onChange={handleChange} >
-          <option value="Please select" disabled selected hidden>Please select the code .</option>
+          <option value="Please select" disabled>Please select the code .</option>
           <option value="CC*">CC*</option>
           <option value="ID">ID</option>
           <option value="CS">CS</option>
           <option value="PI">PI</option>
         </select>
-        <input className = "OK-btn OK-1" type="submit" value="OK" />
+        <input  onBlur = {handleScreen} className = "OK-btn OK-1" type="submit" value="OK" />
       </form>
       <div className = 'mid-screen'>{infoScreenVisible ?  (<p className="text_inline">{pumpInfo.input(value)} </p> ):null }       
       </div>
@@ -111,22 +114,24 @@ const InfoDropdown = ({ pumpInfo,infoScreenVisible, setInfoScreenVisible }) => {
 }
 
 const SettingDropdown = ({ pumpInfo, infoScreenVisible, setInfoScreenVisible}) => {
-  const [inpValue,setInput] = useState(0.00);
+  const [inpValue,setInput] = useState(" ");
   const handleChange = e => {
     e.preventDefault();
     setInput(e.target.value);
   }
   const handleSubmit = e => {
-    console.log('Your choice is: ' + inpValue);
     setInfoScreenVisible(true);
     e.preventDefault();
+  }
+  const handleScreen = () =>{
+    setInfoScreenVisible(false);
   }
   return (
     <div>
       <form onSubmit={handleSubmit}>
           <p className = "text_title">Please input the code and value</p>
-        <input type="text" onChange={handleChange} defaultValue={inpValue} onSubmit={handleSubmit} />
-        <input className = "OK-btn OK-2" type="submit" value="OK" />
+        <input type="text" onChange={handleChange} defaultValue={inpValue} />
+        <input  onBlur = {handleScreen} className = "OK-btn OK-2" type="submit" value="OK" />
       </form>
       <div className = 'mid-screen'>{infoScreenVisible ?  (<p className="text_inline">{pumpInfo.input(inpValue)} </p> ):null }    
       </div>
@@ -225,7 +230,6 @@ const pumpInfo = new Server();
 
 const Homepage = ({pumpInfo, setInfoScreenVisible }) => {
   const [displayDropdownType, setDisplayDropdownType] = useState(true)
-  // const [infoScreenVisible, setInfoScreenVisible] = useState(false)
   return (
     <div className='whole'>
       <div className={`screen`}>
